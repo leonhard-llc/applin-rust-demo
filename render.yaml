@@ -6,5 +6,5 @@ services:
     numInstances: 1
     runtime: rust
     buildCommand: "./build.sh"
-    startCommand: "cargo run"
+    startCommand: target/release/applin-rust-demo
     healthCheckPath: /healthz
