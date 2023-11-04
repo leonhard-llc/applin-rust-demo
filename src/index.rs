@@ -1,7 +1,17 @@
+#![allow(clippy::module_name_repetitions)]
+
 use applin::{
     applin_response, column, form_section, launch_url, nav_button, nav_page, push, scroll, text,
 };
 use servlin::Response;
+
+use crate::account::NEW_ACCOUNT_PAGE_KEY;
+use crate::pages::{INERT_PAGE_KEY, NAV_PAGE_PAGE_KEY, PLAIN_PAGE_PAGE_KEY, POLLED_PAGE_KEY};
+use crate::widgets::{
+    BACK_BUTTON_PAGE_KEY, BUTTON_PAGE_KEY, CHECKBOX_PAGE_KEY, ERROR_TEXT_PAGE_KEY,
+    FORM_BUTTON_PAGE_KEY, FORM_SECTION_PAGE_KEY, GROUPED_ROW_TABLE_PAGE_KEY, IMAGE_PAGE_KEY,
+    NAV_BUTTON_PAGE_KEY, TEXTFIELD_PAGE_KEY, TEXT_PAGE_KEY,
+};
 
 pub fn index_page() -> Response {
     applin_response(nav_page("Applin Rust Demo", scroll(column((
@@ -13,25 +23,25 @@ pub fn index_page() -> Response {
             ).with_sub_text("github.com/leonhard-llc/applin-rails-demo"),
         )),
         form_section("Pages", (
-            nav_button("Nav Page", [push("/nav_page_page")]),
-            nav_button("Plain Page", [push("/plain_page_page")]),
+            nav_button("Nav Page", [push(NAV_PAGE_PAGE_KEY)]),
+            nav_button("Plain Page", [push(PLAIN_PAGE_PAGE_KEY)]),
         )),
         form_section("Widgets", (
-            nav_button("Back Button", [push("/back_button_page")]),
-            nav_button("Button", [push("/button_page")]),
-            nav_button("Checkbox", [push("/checkbox_page")]),
-            nav_button("Error Text", [push("/error_text_page")]),
-            nav_button("Form Button", [push("/form_button_page")]),
-            nav_button("Form Section", [push("/form_section_page")]),
-            nav_button("Grouped Row Table", [push("/grouped_row_table_page")]),
-            nav_button("Image", [push("/image_page")]),
-            nav_button("Nav Button", [push("/nav_button_page")]),
-            nav_button("Text", [push("/text_page")]),
-            nav_button("Textfield", [push("/textfield_page")]),
+            nav_button("Back Button", [push(BACK_BUTTON_PAGE_KEY)]),
+            nav_button("Button", [push(BUTTON_PAGE_KEY)]),
+            nav_button("Checkbox", [push(CHECKBOX_PAGE_KEY)]),
+            nav_button("Error Text", [push(ERROR_TEXT_PAGE_KEY)]),
+            nav_button("Form Button", [push(FORM_BUTTON_PAGE_KEY)]),
+            nav_button("Form Section", [push(FORM_SECTION_PAGE_KEY)]),
+            nav_button("Grouped Row Table", [push(GROUPED_ROW_TABLE_PAGE_KEY)]),
+            nav_button("Image", [push(IMAGE_PAGE_KEY)]),
+            nav_button("Nav Button", [push(NAV_BUTTON_PAGE_KEY)]),
+            nav_button("Text", [push(TEXT_PAGE_KEY)]),
+            nav_button("Textfield", [push(TEXTFIELD_PAGE_KEY)]),
         )),
         form_section("Page Update Modes", (
-            nav_button("Inert", [push("/inert_page")]),
-            nav_button("Polled", [push("/polled_page")]),
+            nav_button("Inert", [push(INERT_PAGE_KEY)]),
+            nav_button("Polled", [push(POLLED_PAGE_KEY)]),
         )),
         form_section("Error Pages", (
             nav_button("App Error", [push("/applin_app_error")]),
@@ -43,7 +53,7 @@ pub fn index_page() -> Response {
             nav_button("Error Details", [push("/error_details")]),
         )),
         form_section("Example Pages", (
-            nav_button("New Account", [push("/new_account")]),
+            nav_button("New Account", [push(NEW_ACCOUNT_PAGE_KEY)]),
         )),
     )))).with_poll(30)).unwrap()
 }
