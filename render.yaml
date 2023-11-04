@@ -1,0 +1,10 @@
+# https://render.com/docs/blueprint-spec
+services:
+  - type: web
+    name: rust-demo.applin.dev
+    plan: starter
+    numInstances: 1
+    runtime: rust
+    buildCommand: "./build.sh"
+    startCommand: "cargo run"
+    healthCheckPath: /healthz
