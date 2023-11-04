@@ -1,0 +1,14 @@
+[package]
+publish = false
+edition = "2021"
+name = "applin-rust-demo"
+version = "0.1.0"
+
+[dependencies]
+applin = { version = "0.1.0", features = ["servlin"], path = "../applin-rust" }
+dotenv = "^0.15.0"
+servlin = { version = "^0.4.0", features = ["json"] }
+#nanorand = { version = "^0.7.0", features = ["alloc", "chacha", "std"] }
+#once_cell = "1"
+serde = { version = "1", features = ["derive"] }
+temp-dir = "^0.1.11"
