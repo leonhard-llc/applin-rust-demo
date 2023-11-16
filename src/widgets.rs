@@ -126,21 +126,19 @@ pub fn form_button_page() -> Response {
     applin_response(nav_page(
         "Form Button",
         scroll(form((
-            form_button("Button", [push("/button_pressed_page")]),
+            form_button("Button", [rpc("/add_item"), pop()]),
             form_button(
                 "MMMM MMMM MMMM MMMM MMMM MMMM MMMM MMMM MMMM MMMM MMMM MMMM MMMM MMMM",
-                [push("/button_pressed_page")],
+                [rpc("/add_item"), pop()],
             ),
             form_button(
                 "MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM",
-                [push("/button_pressed_page")],
+                [rpc("/add_item"), pop()],
             ),
             form_button("Disabled", []),
-            form_button("Start Aligned", [push("/button_pressed_page")])
-                .with_align(HAlignment::Start),
-            form_button("Center Aligned", [push("/button_pressed_page")])
-                .with_align(HAlignment::Center),
-            form_button("End Aligned", [push("/button_pressed_page")]).with_align(HAlignment::End),
+            form_button("Start Aligned", [rpc("/add_item"), pop()]).with_align(HAlignment::Start),
+            form_button("Center Aligned", [rpc("/add_item"), pop()]).with_align(HAlignment::Center),
+            form_button("End Aligned", [rpc("/add_item"), pop()]).with_align(HAlignment::End),
         ))),
     ))
     .unwrap()
