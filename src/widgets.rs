@@ -1,9 +1,14 @@
-use applin::{
-    applin_response, back_button, button, checkbox, empty, error_text, form, form_button,
-    form_section, grouped_row_table, image, nav_button, nav_page, pop, push, rpc, scroll, table,
-    text, textfield, Allow, AutoCapitalize, Disposition, HAlignment,
+use applin::action::{pop, push, rpc};
+use applin::applin_response;
+use applin::option::{Allow, AutoCapitalize, Disposition, HAlignment};
+use applin::page::nav_page;
+use applin::widget::{
+    back_button, button, checkbox, empty, error_text, form, form_button, form_section,
+    grouped_row_table, image, nav_button, scroll, table, text, textfield,
 };
+use servlin::internal::FormatTime;
 use servlin::Response;
+use std::time::{Duration, SystemTime};
 
 use crate::{OK_KEY, PLACEHOLDER_IMAGE_KEY, SERVER_ERROR_KEY};
 
@@ -94,15 +99,25 @@ pub fn checkbox_page() -> Response {
                 .with_initial_bool(true),
             checkbox("with-rpc")
                 .with_text("Does RPC on change")
-                .with_rpc(OK_KEY),
+                .with_actions([rpc(OK_KEY)]),
             checkbox("with-bad-rpc")
                 .with_text("Does RPC on change, but it fails")
-                .with_rpc(SERVER_ERROR_KEY),
+                .with_actions([rpc(SERVER_ERROR_KEY)]),
             checkbox("no-label-checkbox"),
             checkbox("mmmm-mmmm-checkbox")
                 .with_text("MMMM MMMM MMMM MMMM MMMM MMMM MMMM MMMM MMMM MMMM MMMM MMMM MMMM MMMM"),
             checkbox("mmmmmmmm-checkbox")
                 .with_text("MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM"),
+            text(format!(
+                "Time of page poll: {}",
+                SystemTime::now().iso8601_utc()
+            )),
+            checkbox("polls")
+                .with_text("Polls page")
+                .with_poll_delay(Duration::ZERO),
+            checkbox("poll-delay")
+                .with_text("Polls page after 1 second delay")
+                .with_poll_delay(Duration::from_secs(1)),
         ))),
     ))
     .unwrap()
@@ -287,20 +302,26 @@ pub fn textfield_page() -> Response {
         "Text Field",
         scroll(form((
       textfield("field1").with_label("Field 1"),
-      textfield("field2").with_label("Field 2").with_error("An error message."),
-      textfield("field3").with_label("Field 3").with_initial_string( "initial text"),
+      textfield("with-err").with_label("With an error message").with_error("An error message."),
+      textfield("with-short-initial").with_label("With a short initial string").with_initial_string( "initial text"),
       textfield(
-        "mmmm").with_label("Field 4").with_initial_string( "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+        "with-long-initial").with_label("With a long initial string").with_initial_string( "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
       ),
-      textfield("field4").with_label("Enter numbers").with_allow( Allow::Numbers),
-      textfield("field5").with_label("Enter text").with_allow( Allow::Ascii),
-      textfield("field6").with_label("Enter tel").with_allow( Allow::Tel),
-      textfield("field7").with_label("Enter email").with_allow( Allow::Email),
-      textfield("field8").with_label("Enter name").with_auto_capitalize(AutoCapitalize::Names),
-      textfield("field8").with_label("Enter sentences").with_auto_capitalize(AutoCapitalize::Sentences),
+      textfield("numbers").with_label("Enter numbers").with_allow( Allow::Numbers),
+      textfield("text").with_label("Enter text").with_allow( Allow::Ascii),
+      textfield("tel").with_label("Enter tel").with_allow( Allow::Tel),
+      textfield("email").with_label("Enter email").with_allow( Allow::Email),
+      textfield("name").with_label("Enter name").with_auto_capitalize(AutoCapitalize::Names),
+      textfield("sentences").with_label("Enter sentences").with_auto_capitalize(AutoCapitalize::Sentences),
       // TODO: Implement textfield.max_lines and uncomment.
       // textfield("field9").with_label("Enter one line").with_max_lines( 1),
       // textfield("field10").with_label("Enter up to three lines").with_max_lines( 3),
+      text(format!(
+          "Time of page poll: {}",
+          SystemTime::now().iso8601_utc()
+      )),
+      textfield("polls").with_label("Polls page").with_poll_delay(Duration::ZERO),
+      textfield("with-poll-delay").with_label("Polls page after 1 second delay").with_poll_delay(Duration::from_secs(1)),
         ))),
     ))
     .unwrap()

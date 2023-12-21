@@ -37,7 +37,7 @@ fn handle_req(_state: Arc<State>, req: Request) -> Result<Response, Error> {
     match (req.method(), req.url().path()) {
         ("GET", "/healthz") => Ok(Response::text(200, "success")),
         ("GET" | "POST", OK_KEY) => Ok(Response::new(200)),
-        ("GET" | "POST", USER_ERROR_KEY) => Ok(user_error("example error")),
+        ("GET" | "POST", USER_ERROR_KEY) => Err(user_error("example error")),
         ("GET" | "POST", SERVER_ERROR_KEY) => Err(Error::server_error("server error")),
         ("POST", account::CREATE_ACCOUNT_KEY) => account::create_account(&req),
         ("GET" | "POST", account::NEW_ACCOUNT_PAGE_KEY) => Ok(account::new_account_page()),

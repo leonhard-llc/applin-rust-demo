@@ -1,8 +1,9 @@
 #![allow(clippy::module_name_repetitions)]
 
-use applin::{
-    applin_response, column, form_section, launch_url, nav_button, nav_page, push, scroll, text,
-};
+use applin::action::{launch_url, push};
+use applin::applin_response;
+use applin::page::nav_page;
+use applin::widget::{column, form_section, nav_button, scroll, text};
 use servlin::Response;
 
 use crate::account::NEW_ACCOUNT_PAGE_KEY;

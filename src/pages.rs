@@ -1,4 +1,7 @@
-use applin::{applin_response, button, form, nav_page, plain_page, pop, scroll, text};
+use applin::action::pop;
+use applin::applin_response;
+use applin::page::{nav_page, plain_page};
+use applin::widget::{button, form, scroll, text};
 use servlin::internal::FormatTime;
 use servlin::Response;
 use std::time::SystemTime;

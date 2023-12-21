@@ -1,9 +1,9 @@
 #![allow(clippy::module_name_repetitions)]
 use crate::HOME_PAGE_KEY;
-use applin::{
-    applin_response, checkbox, form, form_button, nav_button, nav_page, push, replace_all, rpc,
-    scroll, textfield, user_error,
-};
+use applin::action::{push, replace_all, rpc};
+use applin::page::nav_page;
+use applin::widget::{checkbox, form, form_button, nav_button, scroll, textfield};
+use applin::{applin_response, user_error};
 use safe_regex::{regex, Matcher0};
 use serde::Deserialize;
 use servlin::{Error, Request, Response};
@@ -19,12 +19,12 @@ pub fn create_account(req: &Request) -> Result<Response, Error> {
     }
     let input: Input = req.json()?;
     if !input.agree {
-        return Ok(user_error("You must agree to the terms"));
+        return Err(user_error("You must agree to the terms"));
     }
     let username = input.username.trim();
     let matcher: Matcher0<_> = regex!(br"[a-z0-9]+");
     if !matcher.is_match(username.as_bytes()) {
-        return Ok(user_error("Please enter letters and numbers"));
+        return Err(user_error("Please enter letters and numbers"));
     }
     Ok(Response::ok_200())
 }
