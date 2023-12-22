@@ -84,12 +84,12 @@ fn main() {
         move |req: Request| log_request_and_response(req, |req| handle_req(state, req)).unwrap();
     let cache_dir = TempDir::new().unwrap();
     safina_timer::start_timer_thread();
-    let executor = safina_executor::Executor::new(1, 4).unwrap();
+    let executor = safina_executor::Executor::default();
     executor
         .block_on(
             HttpServerBuilder::new()
                 .listen_addr(listen_addr)
-                .max_conns(10)
+                .max_conns(1000) // Allow a lot of load balancers to keep connections open.
                 .small_body_len(64 * 1024)
                 .receive_large_bodies(cache_dir.path())
                 .spawn_and_join(request_handler),
