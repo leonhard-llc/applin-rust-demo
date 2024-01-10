@@ -13,6 +13,7 @@ use crate::widgets::{
     FORM_BUTTON_PAGE_KEY, FORM_SECTION_PAGE_KEY, GROUPED_ROW_TABLE_PAGE_KEY, IMAGE_PAGE_KEY,
     NAV_BUTTON_PAGE_KEY, TEXTFIELD_PAGE_KEY, TEXT_PAGE_KEY,
 };
+use crate::{SERVER_ERROR_KEY, USER_ERROR_KEY};
 
 pub fn index_page() -> Response {
     applin_response(nav_page("Applin Rust Demo", scroll(column((
@@ -48,9 +49,9 @@ pub fn index_page() -> Response {
             nav_button("App Error", [push("/applin_app_error")]),
             nav_button("Page Not Loaded", [push("/applin_page_not_loaded")]),
             nav_button("Network Error", [push("/applin_network_error")]),
-            nav_button("Server Error", [push("/applin_server_error")]),
+            nav_button("Server Error", [push(SERVER_ERROR_KEY)]),
             nav_button("State Load Error", [push("/applin_state_load_error")]),
-            nav_button("User Error", [push("/applin_user_error")]),
+            nav_button("User Error", [push(USER_ERROR_KEY)]),
             nav_button("Error Details", [push("/error_details")]),
         )),
         form_section("Example Pages", (

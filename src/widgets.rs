@@ -49,7 +49,7 @@ pub const BACK_BUTTON_RPC_ERROR_PAGE_KEY: &str = "/back_button_rpc_error_page";
 pub fn back_button_rpc_error_page() -> Response {
     applin_response(
         nav_page("RPC Error", scroll(button("Back without RPC", [pop()])))
-            .with_start(back_button([rpc(SERVER_ERROR_KEY), pop()])),
+            .with_start(back_button([rpc(SERVER_ERROR_KEY, false), pop()])),
     )
     .unwrap()
 }
@@ -58,7 +58,7 @@ pub const BACK_BUTTON_RPC_OK_PAGE_KEY: &str = "/back_button_rpc_ok_page";
 pub fn back_button_rpc_ok_page() -> Response {
     applin_response(
         nav_page("RPC", scroll(button("Back without RPC", [pop()])))
-            .with_start(back_button([rpc(OK_KEY), pop()])),
+            .with_start(back_button([rpc(OK_KEY, false), pop()])),
     )
     .unwrap()
 }
@@ -99,10 +99,10 @@ pub fn checkbox_page() -> Response {
                 .with_initial_bool(true),
             checkbox("with-rpc")
                 .with_text("Does RPC on change")
-                .with_actions([rpc(OK_KEY)]),
+                .with_actions([rpc(OK_KEY, false)]),
             checkbox("with-bad-rpc")
                 .with_text("Does RPC on change, but it fails")
-                .with_actions([rpc(SERVER_ERROR_KEY)]),
+                .with_actions([rpc(SERVER_ERROR_KEY, false)]),
             checkbox("no-label-checkbox"),
             checkbox("mmmm-mmmm-checkbox")
                 .with_text("MMMM MMMM MMMM MMMM MMMM MMMM MMMM MMMM MMMM MMMM MMMM MMMM MMMM MMMM"),
@@ -115,7 +115,7 @@ pub fn checkbox_page() -> Response {
             checkbox("polls")
                 .with_text("Polls page")
                 .with_poll_delay(Duration::ZERO),
-            checkbox("poll-delay")
+            checkbox("poll_delay")
                 .with_text("Polls page after 1 second delay")
                 .with_poll_delay(Duration::from_secs(1)),
         ))),
@@ -141,19 +141,21 @@ pub fn form_button_page() -> Response {
     applin_response(nav_page(
         "Form Button",
         scroll(form((
-            form_button("Button", [rpc("/add_item"), pop()]),
+            form_button("Button", [push(BUTTON_PRESSED_PAGE_KEY)]),
             form_button(
                 "MMMM MMMM MMMM MMMM MMMM MMMM MMMM MMMM MMMM MMMM MMMM MMMM MMMM MMMM",
-                [rpc("/add_item"), pop()],
+                [push(BUTTON_PRESSED_PAGE_KEY)],
             ),
             form_button(
                 "MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM",
-                [rpc("/add_item"), pop()],
+                [push(BUTTON_PRESSED_PAGE_KEY)],
             ),
             form_button("Disabled", []),
-            form_button("Start Aligned", [rpc("/add_item"), pop()]).with_align(HAlignment::Start),
-            form_button("Center Aligned", [rpc("/add_item"), pop()]).with_align(HAlignment::Center),
-            form_button("End Aligned", [rpc("/add_item"), pop()]).with_align(HAlignment::End),
+            form_button("Start Aligned", [push(BUTTON_PRESSED_PAGE_KEY)])
+                .with_align(HAlignment::Start),
+            form_button("Center Aligned", [push(BUTTON_PRESSED_PAGE_KEY)])
+                .with_align(HAlignment::Center),
+            form_button("End Aligned", [push(BUTTON_PRESSED_PAGE_KEY)]).with_align(HAlignment::End),
         ))),
     ))
     .unwrap()
@@ -230,20 +232,23 @@ pub fn nav_button_page() -> Response {
     applin_response(nav_page(
         "Nav Button",
         scroll(form((
-            nav_button("Page 1", [push("/p1")]),
-            nav_button("Page 2", [push("/p2")]).with_sub_text("A very nice page"),
-            nav_button("Page 3", [push("/p3")]).with_badge_text("5"),
-            nav_button("Page 4", [push("/p4")]).with_badge_text("123456789012345678901234567890"),
-            nav_button("Page 5", [push("/p5")]).with_photo_url(PLACEHOLDER_IMAGE_KEY),
-            nav_button("Page 6", [push("/p6")]).with_photo_url("/nonexistent.png"),
+            nav_button("Page 1", [push(BUTTON_PRESSED_PAGE_KEY)]),
+            nav_button("Page 2", [push(BUTTON_PRESSED_PAGE_KEY)]).with_sub_text("A very nice page"),
+            nav_button("Page 3", [push(BUTTON_PRESSED_PAGE_KEY)]).with_badge_text("5"),
+            nav_button("Page 4", [push(BUTTON_PRESSED_PAGE_KEY)])
+                .with_badge_text("123456789012345678901234567890"),
+            nav_button("Page 5", [push(BUTTON_PRESSED_PAGE_KEY)])
+                .with_photo_url(PLACEHOLDER_IMAGE_KEY),
+            nav_button("Page 6", [push(BUTTON_PRESSED_PAGE_KEY)])
+                .with_photo_url("/nonexistent.png"),
             nav_button("Disabled", []),
             nav_button(
                 "MMMM MMMM MMMM MMMM MMMM MMMM MMMM MMMM MMMM MMMM MMMM MMMM MMMM MMMM",
-                [push("/mmmm_mmmm")],
+                [push(BUTTON_PRESSED_PAGE_KEY)],
             ),
             nav_button(
                 "MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM",
-                [push("/mmmmmmmm")],
+                [push(BUTTON_PRESSED_PAGE_KEY)],
             ),
         ))),
     ))
@@ -321,7 +326,7 @@ pub fn textfield_page() -> Response {
           SystemTime::now().iso8601_utc()
       )),
       textfield("polls").with_label("Polls page").with_poll_delay(Duration::ZERO),
-      textfield("with-poll-delay").with_label("Polls page after 1 second delay").with_poll_delay(Duration::from_secs(1)),
+      textfield("poll_delay").with_label("Polls page after 1 second delay").with_poll_delay(Duration::from_secs(1)),
         ))),
     ))
     .unwrap()

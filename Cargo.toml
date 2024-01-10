@@ -5,14 +5,12 @@ name = "applin-rust-demo"
 version = "0.1.0"
 
 [dependencies]
-#applin = { version = "^0.1.5", features = ["servlin"], path = "../applin-rust" }
-applin = { version = "^0.1.5", features = ["servlin"] }
+#applin = { version = "^0.2.0", features = ["servlin"], path = "../applin-rust" }
+applin = { version = "^0.2.0", features = ["servlin"] }
 dotenv = "^0.15.0"
 include_dir = "^0.7.3"
-#servlin = { version = "^0.4.0", features = ["include_dir", "json"], path = "../servlin" }
-servlin = { version = "^0.4.0", features = ["include_dir", "json"] }
-#nanorand = { version = "^0.7.0", features = ["alloc", "chacha", "std"] }
-#once_cell = "1"
+#servlin = { version = "^0.4.2", features = ["include_dir", "json"], path = "../servlin" }
+servlin = { version = "^0.4.2", features = ["include_dir", "json"] }
 safe-regex = "^0.2.5"
 serde = { version = "1", features = ["derive"] }
 temp-dir = "^0.1.11"

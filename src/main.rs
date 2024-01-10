@@ -37,10 +37,10 @@ fn handle_req(_state: Arc<State>, req: Request) -> Result<Response, Error> {
     match (req.method(), req.url().path()) {
         ("GET", "/healthz") => Ok(Response::text(200, "success")),
         ("GET" | "POST", OK_KEY) => Ok(Response::new(200)),
-        ("GET" | "POST", USER_ERROR_KEY) => Err(user_error("example error")),
-        ("GET" | "POST", SERVER_ERROR_KEY) => Err(Error::server_error("server error")),
+        ("GET" | "POST", USER_ERROR_KEY) => Err(user_error("example user error")),
+        ("GET" | "POST", SERVER_ERROR_KEY) => Err(Error::server_error("example server error")),
         ("POST", account::CREATE_ACCOUNT_KEY) => account::create_account(&req),
-        ("GET" | "POST", account::NEW_ACCOUNT_PAGE_KEY) => Ok(account::new_account_page()),
+        ("GET" | "POST", account::NEW_ACCOUNT_PAGE_KEY) => account::new_account_page(&req),
         ("GET", HOME_PAGE_KEY) => Ok(index::index_page()),
         ("GET", pages::NAV_PAGE_PAGE_KEY) => Ok(pages::nav_page_page()),
         ("GET", pages::PLAIN_PAGE_PAGE_KEY) => Ok(pages::plain_page_page()),
@@ -78,7 +78,7 @@ fn main() {
         .parse()
         .expect("failed parsing PORT env var");
     let listen_addr = socket_addr_all_interfaces(port);
-
+    println!("Listening on TCP port {port}");
     let state = Arc::new(State {});
     let request_handler =
         move |req: Request| log_request_and_response(req, |req| handle_req(state, req)).unwrap();
