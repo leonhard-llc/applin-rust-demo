@@ -34,7 +34,7 @@ impl Input {
 
 pub fn create_account(req: &Request) -> Result<Response, Error> {
     let input: Input = req.json()?;
-    input.check().map_err(|e| user_error(e))?;
+    input.check().map_err(user_error)?;
     // Write new account to database...
     Ok(Response::ok_200())
 }
@@ -42,7 +42,7 @@ pub fn create_account(req: &Request) -> Result<Response, Error> {
 pub const NEW_ACCOUNT_PAGE_KEY: &str = "/new_account_page";
 pub fn new_account_page(req: &Request) -> Result<Response, Error> {
     let opt_input: Option<Input> = req.opt_json()?;
-    let error = opt_input.map(|input| input.check().err()).flatten();
+    let error = opt_input.and_then(|input| input.check().err());
     applin_response(nav_page(
         "New Account",
         scroll(form((
@@ -50,7 +50,7 @@ pub fn new_account_page(req: &Request) -> Result<Response, Error> {
             nav_button("Terms", [push("/terms")]),
             nav_button("Privacy", [push("/privacy")]),
             checkbox("agree").with_text("I agree"),
-            error.map(|e| error_text(e)),
+            error.map(error_text),
             form_button(
                 "Create Account",
                 [rpc("/create_account", true), replace_all(HOME_PAGE_KEY)],
