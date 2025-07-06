@@ -3,7 +3,6 @@ use std::sync::Arc;
 use applin::user_error;
 use include_dir::include_dir;
 use servlin::log::log_request_and_response;
-use servlin::reexport::{safina_executor, safina_timer};
 use servlin::{socket_addr_all_interfaces, Error, HttpServerBuilder, Request, Response};
 use temp_dir::TempDir;
 
@@ -34,7 +33,7 @@ pub const PLACEHOLDER_IMAGE_KEY: &str = "/placeholder-200x200.png";
 
 #[allow(clippy::needless_pass_by_value)]
 fn handle_req(_state: Arc<State>, req: Request) -> Result<Response, Error> {
-    match (req.method(), req.url().path()) {
+    match (req.method(), req.url().path.as_str()) {
         ("GET", "/healthz") => Ok(Response::text(200, "success")),
         ("GET" | "POST", OK_KEY) => Ok(Response::new(200)),
         ("GET" | "POST", USER_ERROR_KEY) => Err(user_error("example user error")),
@@ -83,8 +82,8 @@ fn main() {
     let request_handler =
         move |req: Request| log_request_and_response(req, |req| handle_req(state, req)).unwrap();
     let cache_dir = TempDir::new().unwrap();
-    safina_timer::start_timer_thread();
-    let executor = safina_executor::Executor::default();
+    safina::timer::start_timer_thread();
+    let executor = Arc::new(safina::executor::Executor::default());
     executor
         .block_on(
             HttpServerBuilder::new()
